@@ -627,10 +627,14 @@ code {
 }
 
 .dock-pill {
+  border: none;
+  appearance: none;
   padding: 0.72rem 1rem;
   border-radius: 999px;
+  background: transparent;
   color: var(--muted);
   font-weight: 700;
+  cursor: pointer;
 }
 
 .dock-pill.active {

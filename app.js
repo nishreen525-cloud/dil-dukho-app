@@ -39,6 +39,7 @@ const state = {
   currentProfile: null,
   familyMembers: [],
   entries: [],
+  activeTab: "home",
 };
 
 const loginScreen = document.querySelector("#login-screen");
@@ -91,6 +92,8 @@ const timelineMessage = document.querySelector("#timeline-message");
 const statTotal = document.querySelector("#stat-total");
 const statOpenHearts = document.querySelector("#stat-open-hearts");
 const statTopPerson = document.querySelector("#stat-top-person");
+const tabPanels = [...document.querySelectorAll("[data-tab-panel]")];
+const tabButtons = [...document.querySelectorAll("[data-tab-target]")];
 
 function readStorage(key) {
   try {
@@ -420,6 +423,37 @@ function renderStats(entries) {
   statTopPerson.textContent = getTopPerson(entries);
 }
 
+function shouldShowPanel(panel) {
+  if (panel.dataset.tabPanel !== state.activeTab) {
+    return false;
+  }
+
+  if (panel === familyPanel) {
+    return isOwner() && state.mode === "shared";
+  }
+
+  if (panel === entryPanel) {
+    return isOwner();
+  }
+
+  return true;
+}
+
+function setActiveTab(nextTab) {
+  const allowedTabs = new Set(["home", "hearts", "timeline"]);
+  state.activeTab = allowedTabs.has(nextTab) ? nextTab : "home";
+
+  tabPanels.forEach((panel) => {
+    panel.classList.toggle("hidden", !shouldShowPanel(panel));
+  });
+
+  tabButtons.forEach((button) => {
+    const isActive = button.dataset.tabTarget === state.activeTab;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+}
+
 function renderViewerNote() {
   if (isOwner()) {
     viewerNote.innerHTML = `
@@ -736,6 +770,7 @@ function showDashboard() {
   syncMemberOptions();
   renderViewerNote();
   renderEntries();
+  setActiveTab(state.activeTab);
   loginScreen.classList.add("hidden");
   appScreen.classList.remove("hidden");
 }
@@ -752,6 +787,7 @@ function showLogin() {
   showFamilyMessage("");
   renderAppChrome();
   renderSessionResume();
+  setActiveTab("home");
 }
 
 async function refreshData() {
@@ -1394,6 +1430,10 @@ function handleEntryListClick(event) {
   handleSupportAccept(button);
 }
 
+function handleTabClick(event) {
+  setActiveTab(event.currentTarget.dataset.tabTarget);
+}
+
 function initDefaults() {
   dateInput.value = new Date().toISOString().split("T")[0];
   FEELINGS.forEach((feeling) => {
@@ -1445,5 +1485,6 @@ intensityInput.addEventListener("input", handleIntensityChange);
 filterSelect.addEventListener("change", () => renderEntries());
 entryList.addEventListener("submit", handleSupportSubmit);
 entryList.addEventListener("click", handleEntryListClick);
+tabButtons.forEach((button) => button.addEventListener("click", handleTabClick));
 
 initApp();

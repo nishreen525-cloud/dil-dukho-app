@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dil Dukho</title>
-    <link rel="stylesheet" href="./styles.css?v=20260701-2" />
+    <link rel="stylesheet" href="./styles.css?v=20260701-4" />
   </head>
   <body>
     <div class="background-bloom bloom-one"></div>
@@ -137,7 +137,7 @@
         </header>
 
         <main class="dashboard-grid">
-          <section class="panel">
+          <section class="panel" data-tab-panel="home">
             <div id="viewer-note" class="viewer-note"></div>
 
             <div class="stats-grid">
@@ -156,7 +156,7 @@
             </div>
           </section>
 
-          <section class="panel">
+          <section class="panel" data-tab-panel="hearts">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Heart garden</p>
@@ -167,7 +167,7 @@
             <div id="heart-overview" class="heart-overview"></div>
           </section>
 
-          <section id="family-panel" class="panel hidden">
+          <section id="family-panel" class="panel hidden" data-tab-panel="home">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Step 1</p>
@@ -198,7 +198,7 @@
             <div id="family-list" class="member-list"></div>
           </section>
 
-          <section id="entry-panel" class="panel">
+          <section id="entry-panel" class="panel" data-tab-panel="home">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Step 2</p>
@@ -254,7 +254,7 @@
             </form>
           </section>
 
-          <section class="panel panel-wide">
+          <section class="panel panel-wide" data-tab-panel="timeline">
             <div class="section-heading entries-heading">
               <div>
                 <p class="eyebrow">Timeline</p>
@@ -274,15 +274,15 @@
           </section>
         </main>
         <nav class="app-dock" aria-label="App sections">
-          <span class="dock-pill active">Home</span>
-          <span class="dock-pill">Hearts</span>
-          <span class="dock-pill">Timeline</span>
+          <button class="dock-pill active" type="button" data-tab-target="home">Home</button>
+          <button class="dock-pill" type="button" data-tab-target="hearts">Hearts</button>
+          <button class="dock-pill" type="button" data-tab-target="timeline">Timeline</button>
         </nav>
       </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./config.js?v=20260701-2"></script>
-    <script src="./app.js?v=20260701-2"></script>
+    <script src="./config.js?v=20260701-4"></script>
+    <script src="./app.js?v=20260701-4"></script>
   </body>
 </html>
