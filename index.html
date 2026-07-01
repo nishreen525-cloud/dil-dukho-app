@@ -7,14 +7,24 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="background-bloom bloom-one"></div>
+    <div class="background-bloom bloom-two"></div>
     <div class="shell">
       <section id="login-screen" class="panel login-panel">
         <div class="hero">
-          <p class="eyebrow">Dil Dukho</p>
-          <h1>Track hurt, hearts, and repair.</h1>
+          <div class="hero-badge-row">
+            <span class="badge soft-badge">Dil Dukho</span>
+            <span class="hero-sparkle">♡</span>
+          </div>
+          <h1>A little heart diary for your family.</h1>
           <p class="subtitle">
-            A gentle family feelings tracker with heart visuals, supportive replies, and a shared mode that is designed to work in Firefox.
+            Log what happened, see hearts crack by intensity, and let supportive replies help them heal.
           </p>
+          <div class="hero-chip-row">
+            <span class="mini-chip">Private owner space</span>
+            <span class="mini-chip">Cute heart view</span>
+            <span class="mini-chip">Support messages</span>
+          </div>
         </div>
 
         <div class="mode-banner">
@@ -95,19 +105,19 @@
             </div>
 
             <div class="card">
-              <h2>Shared setup</h2>
+              <h2>Sweet setup</h2>
               <p class="muted">
-                To turn on the shared family app, create a Supabase project, run the SQL in <code>supabase/schema.sql</code>, and fill in the public settings in <code>config.js</code>.
+                Once Supabase is connected, this turns into your shared family app with real sign-ins and saved hearts.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="app-screen" class="hidden">
+      <section id="app-screen" class="hidden app-stage">
         <header class="topbar">
-          <div>
-            <p class="eyebrow">Dil Dukho Dashboard</p>
+          <div class="topbar-copy">
+            <p class="eyebrow">Dil Dukho</p>
             <h1 id="dashboard-title">Welcome</h1>
           </div>
           <div class="topbar-actions">
@@ -140,7 +150,7 @@
           <section class="panel">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">Heart view</p>
+                <p class="eyebrow">Heart garden</p>
                 <h2>Family overview</h2>
               </div>
             </div>
@@ -182,7 +192,7 @@
           <section id="entry-panel" class="panel">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">New entry</p>
+                <p class="eyebrow">New note</p>
                 <h2>Log what happened</h2>
               </div>
             </div>
@@ -254,6 +264,11 @@
             <div id="entry-list" class="entry-list"></div>
           </section>
         </main>
+        <nav class="app-dock" aria-label="App sections">
+          <span class="dock-pill active">Home</span>
+          <span class="dock-pill">Hearts</span>
+          <span class="dock-pill">Timeline</span>
+        </nav>
       </section>
     </div>
 
