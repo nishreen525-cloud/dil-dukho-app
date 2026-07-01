@@ -53,6 +53,11 @@ const sharedAuthForm = document.querySelector("#shared-auth-form");
 const authEmailInput = document.querySelector("#auth-email");
 const authPasswordInput = document.querySelector("#auth-password");
 const authMessage = document.querySelector("#auth-message");
+const sessionResumeCard = document.querySelector("#session-resume-card");
+const sessionResumeTitle = document.querySelector("#session-resume-title");
+const sessionResumeText = document.querySelector("#session-resume-text");
+const continueSessionButton = document.querySelector("#continue-session-button");
+const clearSessionButton = document.querySelector("#clear-session-button");
 const demoLoginForm = document.querySelector("#demo-login-form");
 const loginMessage = document.querySelector("#login-message");
 const profileSelect = document.querySelector("#profile-select");
@@ -411,7 +416,7 @@ function renderViewerNote() {
   if (isOwner()) {
     viewerNote.innerHTML = `
       <h2>Your private tracker</h2>
-      <p>Log what happened, how much it hurt, and what kind of support might help. When family members reply with kind words or emojis, you can accept them to mend the heart.</p>
+      <p>Log what happened, how much it hurt, and what kind of support might help. Start by adding family members, then save entries for them below.</p>
     `;
     entryPanel.classList.remove("hidden");
     familyPanel.classList.toggle("hidden", state.mode !== "shared");
@@ -436,7 +441,7 @@ function renderHeartOverview() {
       <div class="empty-state">
         ${
           state.mode === "shared"
-            ? "Add a family member first so entries and shared support can start."
+            ? "Nothing has been added yet. Start with Step 1 below and add your first family member."
             : "No family members are available in this view."
         }
       </div>
@@ -501,7 +506,7 @@ function renderFamilyList() {
   if (!state.familyMembers.length) {
     familyList.innerHTML = `
       <div class="empty-state">
-        Add the family members who should be able to sign in and send support.
+        Add the family members who should be able to sign in and send support. After that, you can log entries for them.
       </div>
     `;
     return;
@@ -622,7 +627,13 @@ function renderEntries() {
   if (!entries.length) {
     entryList.innerHTML = `
       <div class="empty-state">
-        No entries yet for this view.
+        ${
+          isOwner() && !state.familyMembers.length
+            ? "No entries yet because there are no family members added yet."
+            : isOwner()
+              ? "No entries yet. Add your first heart note in Step 2."
+              : "No entries yet for this view."
+        }
       </div>
     `;
     return;
@@ -691,6 +702,19 @@ function renderAppChrome() {
   }
 }
 
+function renderSessionResume() {
+  if (state.mode !== "shared" || !state.currentProfile) {
+    sessionResumeCard.classList.add("hidden");
+    return;
+  }
+
+  sessionResumeTitle.textContent = `Already signed in as ${state.currentProfile.displayName}`;
+  sessionResumeText.textContent = isOwner()
+    ? "You already have an active session. Continue to your dashboard or sign out here first."
+    : "You already have an active session. Continue to your support view or sign out here first.";
+  sessionResumeCard.classList.remove("hidden");
+}
+
 function showDashboard() {
   const ownerView = isOwner();
   dashboardTitle.textContent = ownerView
@@ -719,6 +743,7 @@ function showLogin() {
   showTimelineMessage("");
   showFamilyMessage("");
   renderAppChrome();
+  renderSessionResume();
 }
 
 async function refreshData() {
@@ -1224,6 +1249,19 @@ async function handleLogout() {
   }
 }
 
+async function handleContinueSession() {
+  if (!state.currentProfile) {
+    return;
+  }
+
+  try {
+    await refreshData();
+    showDashboard();
+  } catch (error) {
+    showAuthMessage(error.message || "Could not continue the saved session.");
+  }
+}
+
 function handleIntensityChange() {
   intensityLabel.textContent = `${intensityInput.value} / 5`;
 }
@@ -1366,13 +1404,6 @@ async function initApp() {
     renderAppChrome();
     initDefaults();
     state.currentProfile = await state.service.restoreSession();
-
-    if (state.currentProfile) {
-      await refreshData();
-      showDashboard();
-      return;
-    }
-
     showLogin();
   } catch (error) {
     console.error("Dil Dukho could not initialize.", error);
@@ -1389,6 +1420,8 @@ async function initApp() {
 demoLoginForm.addEventListener("submit", handleDemoLogin);
 sharedAuthForm.addEventListener("submit", handleSharedAuth);
 logoutButton.addEventListener("click", handleLogout);
+continueSessionButton.addEventListener("click", handleContinueSession);
+clearSessionButton.addEventListener("click", handleLogout);
 familyForm.addEventListener("submit", handleFamilySubmit);
 entryForm.addEventListener("submit", handleNewEntry);
 intensityInput.addEventListener("input", handleIntensityChange);

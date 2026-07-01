@@ -39,6 +39,15 @@
             <h2>Shared sign in</h2>
             <p class="muted">Use email + password. This flow works in Firefox, Chrome, and Safari.</p>
 
+            <div id="session-resume-card" class="session-resume hidden">
+              <strong id="session-resume-title">Already signed in</strong>
+              <p id="session-resume-text" class="muted">You can keep going or sign out first.</p>
+              <div class="split-actions">
+                <button id="continue-session-button" class="primary-button" type="button">Continue</button>
+                <button id="clear-session-button" class="ghost-button" type="button">Sign out here</button>
+              </div>
+            </div>
+
             <form id="shared-auth-form" class="stack">
               <label class="field">
                 <span>Email</span>
@@ -161,7 +170,7 @@
           <section id="family-panel" class="panel hidden">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">Shared setup</p>
+                <p class="eyebrow">Step 1</p>
                 <h2>Family members</h2>
               </div>
             </div>
@@ -192,7 +201,7 @@
           <section id="entry-panel" class="panel">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">New note</p>
+                <p class="eyebrow">Step 2</p>
                 <h2>Log what happened</h2>
               </div>
             </div>

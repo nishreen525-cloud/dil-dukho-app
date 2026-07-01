@@ -189,6 +189,7 @@ code {
 }
 
 .mode-banner,
+.session-resume,
 .login-layout,
 .dashboard-grid,
 .stack,
@@ -209,6 +210,13 @@ code {
   border-radius: 20px;
   border: 1px solid rgba(239, 215, 220, 0.95);
   background: linear-gradient(135deg, rgba(255, 250, 252, 0.92), rgba(255, 240, 246, 0.88));
+}
+
+.session-resume {
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid #f1d7df;
+  background: linear-gradient(180deg, #fff6fa, #fff0f5);
 }
 
 .login-layout {
