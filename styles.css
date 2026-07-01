@@ -94,6 +94,11 @@ code {
   gap: 18px;
 }
 
+.view-stack {
+  display: grid;
+  gap: 18px;
+}
+
 .hero h1,
 .topbar h1,
 .section-heading h2,
@@ -191,7 +196,6 @@ code {
 .mode-banner,
 .session-resume,
 .login-layout,
-.dashboard-grid,
 .stack,
 .entry-form,
 .heart-overview,
@@ -221,11 +225,6 @@ code {
 
 .login-layout {
   grid-template-columns: 1fr 1fr 0.92fr;
-  align-items: start;
-}
-
-.dashboard-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
 }
 
@@ -390,6 +389,35 @@ code {
   font-size: clamp(1.55rem, 3vw, 2.2rem);
 }
 
+.tab-strip {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  width: fit-content;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(241, 214, 212, 0.95);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.tab-pill {
+  border: none;
+  appearance: none;
+  padding: 0.8rem 1.05rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.tab-pill.active {
+  background: linear-gradient(135deg, #ffe7ee, #fff1f5);
+  color: var(--accent-dark);
+}
+
 .badge,
 .tag,
 .status-chip {
@@ -452,6 +480,27 @@ code {
 
 .stat-card strong {
   font-size: 1.7rem;
+}
+
+.quick-actions,
+.empty-state-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.quick-button {
+  border: none;
+  appearance: none;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(135deg, #fff0f5, #ffe7ee);
+  color: var(--accent-dark);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
 }
 
 .section-heading {
@@ -612,34 +661,8 @@ code {
   background: rgba(255, 250, 252, 0.75);
 }
 
-.app-dock {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding: 12px 14px;
-  width: fit-content;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(241, 214, 212, 0.95);
-  border-radius: 999px;
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(18px);
-}
-
-.dock-pill {
-  border: none;
-  appearance: none;
-  padding: 0.72rem 1rem;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.dock-pill.active {
-  background: linear-gradient(135deg, #ffe7ee, #fff1f5);
-  color: var(--accent-dark);
+.helper-panel {
+  align-items: start;
 }
 
 .hidden {
@@ -657,7 +680,6 @@ code {
 
 @media (max-width: 980px) {
   .login-layout,
-  .dashboard-grid,
   .entry-form {
     grid-template-columns: 1fr;
   }
@@ -683,7 +705,7 @@ code {
     grid-template-columns: 1fr;
   }
 
-  .app-dock {
+  .tab-strip {
     width: 100%;
     justify-content: space-between;
   }

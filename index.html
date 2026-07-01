@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dil Dukho</title>
-    <link rel="stylesheet" href="./styles.css?v=20260701-4" />
+    <link rel="stylesheet" href="./styles.css?v=20260701-5" />
   </head>
   <body>
     <div class="background-bloom bloom-one"></div>
     <div class="background-bloom bloom-two"></div>
+
     <div class="shell">
       <section id="login-screen" class="panel login-panel">
         <div class="hero">
@@ -29,9 +30,7 @@
 
         <div class="mode-banner">
           <span id="login-mode-badge" class="badge">Starting…</span>
-          <p id="setup-note" class="mode-note">
-            Loading your sign-in options…
-          </p>
+          <p id="setup-note" class="mode-note">Loading your sign-in options…</p>
         </div>
 
         <div class="login-layout">
@@ -108,9 +107,7 @@
                 <div class="account-pill"><strong>Dad</strong><span>3333</span></div>
                 <div class="account-pill"><strong>Brother</strong><span>4444</span></div>
               </div>
-              <p class="muted small">
-                Demo mode stores data in this browser only.
-              </p>
+              <p class="muted small">Demo mode stores data in this browser only.</p>
             </div>
 
             <div class="card">
@@ -136,153 +133,171 @@
           </div>
         </header>
 
-        <main class="dashboard-grid">
-          <section class="panel" data-tab-panel="home">
-            <div id="viewer-note" class="viewer-note"></div>
+        <nav class="tab-strip" aria-label="App sections">
+          <button class="tab-pill active" type="button" data-tab-target="home">Home</button>
+          <button class="tab-pill" type="button" data-tab-target="hearts">Hearts</button>
+          <button class="tab-pill" type="button" data-tab-target="timeline">Timeline</button>
+        </nav>
 
-            <div class="stats-grid">
-              <div class="stat-card">
-                <span class="stat-label">Entries logged</span>
-                <strong id="stat-total">0</strong>
+        <main class="view-stack">
+          <section id="home-view" class="view-stack" data-view="home">
+            <section class="panel">
+              <div id="viewer-note" class="viewer-note"></div>
+
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <span class="stat-label">Entries logged</span>
+                  <strong id="stat-total">0</strong>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">Broken hearts open</span>
+                  <strong id="stat-open-hearts">0</strong>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">Most mentioned</span>
+                  <strong id="stat-top-person">None yet</strong>
+                </div>
               </div>
-              <div class="stat-card">
-                <span class="stat-label">Broken hearts open</span>
-                <strong id="stat-open-hearts">0</strong>
+
+              <div class="quick-actions">
+                <button class="quick-button" type="button" data-tab-target="hearts">Open hearts</button>
+                <button class="quick-button" type="button" data-tab-target="timeline">Open timeline</button>
               </div>
-              <div class="stat-card">
-                <span class="stat-label">Most mentioned</span>
-                <strong id="stat-top-person">None yet</strong>
+            </section>
+
+            <section id="family-panel" class="panel hidden">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Step 1</p>
+                  <h2>Family members</h2>
+                </div>
               </div>
-            </div>
+
+              <form id="family-form" class="entry-form">
+                <label class="field">
+                  <span>Name</span>
+                  <input id="family-name-input" type="text" maxlength="40" placeholder="Mom" />
+                </label>
+
+                <label class="field">
+                  <span>Relationship</span>
+                  <input id="family-relationship-input" type="text" maxlength="40" placeholder="Mother" />
+                </label>
+
+                <label class="field full-width">
+                  <span>Email</span>
+                  <input id="family-email-input" type="email" maxlength="120" placeholder="mom@example.com" />
+                </label>
+
+                <button class="primary-button full-width" type="submit">Add family member</button>
+                <p id="family-message" class="message full-width" aria-live="polite"></p>
+              </form>
+
+              <div id="family-list" class="member-list"></div>
+            </section>
+
+            <section id="entry-panel" class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Step 2</p>
+                  <h2>Log what happened</h2>
+                </div>
+              </div>
+
+              <form id="entry-form" class="entry-form">
+                <label class="field">
+                  <span>Who hurt your heart?</span>
+                  <select id="person-input" required></select>
+                </label>
+
+                <label class="field">
+                  <span>Date</span>
+                  <input id="date-input" type="date" required />
+                </label>
+
+                <label class="field full-width">
+                  <span>Short title</span>
+                  <input id="title-input" type="text" maxlength="80" placeholder="What happened?" required />
+                </label>
+
+                <label class="field">
+                  <span>Feeling</span>
+                  <select id="feeling-input" required>
+                    <option value="Sad">Sad</option>
+                    <option value="Dismissed">Dismissed</option>
+                    <option value="Angry">Angry</option>
+                    <option value="Lonely">Lonely</option>
+                    <option value="Overwhelmed">Overwhelmed</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Intensity</span>
+                  <input id="intensity-input" type="range" min="1" max="5" value="3" />
+                  <small id="intensity-label">3 / 5</small>
+                </label>
+
+                <label class="field full-width">
+                  <span>Why did it hurt?</span>
+                  <textarea id="details-input" rows="4" maxlength="400" placeholder="Write what happened and how it felt." required></textarea>
+                </label>
+
+                <label class="field full-width">
+                  <span>What would help?</span>
+                  <input id="support-need-input" type="text" maxlength="120" placeholder="A kind text, apology, check-in, or space." />
+                </label>
+
+                <button class="primary-button full-width" type="submit">Save entry</button>
+                <p id="entry-message" class="message full-width" aria-live="polite"></p>
+              </form>
+            </section>
           </section>
 
-          <section class="panel" data-tab-panel="hearts">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Heart garden</p>
-                <h2>Family overview</h2>
+          <section id="hearts-view" class="view-stack hidden" data-view="hearts">
+            <section class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Heart garden</p>
+                  <h2>Family overview</h2>
+                </div>
               </div>
-            </div>
 
-            <div id="heart-overview" class="heart-overview"></div>
+              <div id="heart-overview" class="heart-overview"></div>
+            </section>
+
+            <section class="panel helper-panel">
+              <h2>Keep going</h2>
+              <p class="muted">Add family members and new heart notes from Home, then come back here to see the full heart view.</p>
+              <button class="ghost-button" type="button" data-tab-target="home">Back to home</button>
+            </section>
           </section>
 
-          <section id="family-panel" class="panel hidden" data-tab-panel="home">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Step 1</p>
-                <h2>Family members</h2>
-              </div>
-            </div>
+          <section id="timeline-view" class="view-stack hidden" data-view="timeline">
+            <section class="panel panel-wide">
+              <div class="section-heading entries-heading">
+                <div>
+                  <p class="eyebrow">Timeline</p>
+                  <h2>Saved entries</h2>
+                </div>
 
-            <form id="family-form" class="entry-form">
-              <label class="field">
-                <span>Name</span>
-                <input id="family-name-input" type="text" maxlength="40" placeholder="Mom" />
-              </label>
-
-              <label class="field">
-                <span>Relationship</span>
-                <input id="family-relationship-input" type="text" maxlength="40" placeholder="Mother" />
-              </label>
-
-              <label class="field full-width">
-                <span>Email</span>
-                <input id="family-email-input" type="email" maxlength="120" placeholder="mom@example.com" />
-              </label>
-
-              <button class="primary-button full-width" type="submit">Add family member</button>
-              <p id="family-message" class="message full-width" aria-live="polite"></p>
-            </form>
-
-            <div id="family-list" class="member-list"></div>
-          </section>
-
-          <section id="entry-panel" class="panel" data-tab-panel="home">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Step 2</p>
-                <h2>Log what happened</h2>
-              </div>
-            </div>
-
-            <form id="entry-form" class="entry-form">
-              <label class="field">
-                <span>Who hurt your heart?</span>
-                <select id="person-input" required></select>
-              </label>
-
-              <label class="field">
-                <span>Date</span>
-                <input id="date-input" type="date" required />
-              </label>
-
-              <label class="field full-width">
-                <span>Short title</span>
-                <input id="title-input" type="text" maxlength="80" placeholder="What happened?" required />
-              </label>
-
-              <label class="field">
-                <span>Feeling</span>
-                <select id="feeling-input" required>
-                  <option value="Sad">Sad</option>
-                  <option value="Dismissed">Dismissed</option>
-                  <option value="Angry">Angry</option>
-                  <option value="Lonely">Lonely</option>
-                  <option value="Overwhelmed">Overwhelmed</option>
-                </select>
-              </label>
-
-              <label class="field">
-                <span>Intensity</span>
-                <input id="intensity-input" type="range" min="1" max="5" value="3" />
-                <small id="intensity-label">3 / 5</small>
-              </label>
-
-              <label class="field full-width">
-                <span>Why did it hurt?</span>
-                <textarea id="details-input" rows="4" maxlength="400" placeholder="Write what happened and how it felt." required></textarea>
-              </label>
-
-              <label class="field full-width">
-                <span>What would help?</span>
-                <input id="support-need-input" type="text" maxlength="120" placeholder="A kind text, apology, check-in, or space." />
-              </label>
-
-              <button class="primary-button full-width" type="submit">Save entry</button>
-              <p id="entry-message" class="message full-width" aria-live="polite"></p>
-            </form>
-          </section>
-
-          <section class="panel panel-wide" data-tab-panel="timeline">
-            <div class="section-heading entries-heading">
-              <div>
-                <p class="eyebrow">Timeline</p>
-                <h2>Saved entries</h2>
+                <label class="field compact-field">
+                  <span>Filter</span>
+                  <select id="filter-select">
+                    <option value="all">All family</option>
+                  </select>
+                </label>
               </div>
 
-              <label class="field compact-field">
-                <span>Filter</span>
-                <select id="filter-select">
-                  <option value="all">All family</option>
-                </select>
-              </label>
-            </div>
-
-            <p id="timeline-message" class="message" aria-live="polite"></p>
-            <div id="entry-list" class="entry-list"></div>
+              <p id="timeline-message" class="message" aria-live="polite"></p>
+              <div id="entry-list" class="entry-list"></div>
+            </section>
           </section>
         </main>
-        <nav class="app-dock" aria-label="App sections">
-          <button class="dock-pill active" type="button" data-tab-target="home">Home</button>
-          <button class="dock-pill" type="button" data-tab-target="hearts">Hearts</button>
-          <button class="dock-pill" type="button" data-tab-target="timeline">Timeline</button>
-        </nav>
       </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./config.js?v=20260701-4"></script>
-    <script src="./app.js?v=20260701-4"></script>
+    <script src="./config.js?v=20260701-5"></script>
+    <script src="./app.js?v=20260701-5"></script>
   </body>
 </html>

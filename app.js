@@ -92,8 +92,8 @@ const timelineMessage = document.querySelector("#timeline-message");
 const statTotal = document.querySelector("#stat-total");
 const statOpenHearts = document.querySelector("#stat-open-hearts");
 const statTopPerson = document.querySelector("#stat-top-person");
-const tabPanels = [...document.querySelectorAll("[data-tab-panel]")];
-const tabButtons = [...document.querySelectorAll("[data-tab-target]")];
+const viewPanels = [...document.querySelectorAll("[data-view]")];
+const tabPills = [...document.querySelectorAll(".tab-pill")];
 
 function readStorage(key) {
   try {
@@ -424,10 +424,6 @@ function renderStats(entries) {
 }
 
 function shouldShowPanel(panel) {
-  if (panel.dataset.tabPanel !== state.activeTab) {
-    return false;
-  }
-
   if (panel === familyPanel) {
     return isOwner() && state.mode === "shared";
   }
@@ -443,11 +439,15 @@ function setActiveTab(nextTab) {
   const allowedTabs = new Set(["home", "hearts", "timeline"]);
   state.activeTab = allowedTabs.has(nextTab) ? nextTab : "home";
 
-  tabPanels.forEach((panel) => {
+  viewPanels.forEach((panel) => {
+    panel.classList.toggle("hidden", panel.dataset.view !== state.activeTab);
+  });
+
+  [familyPanel, entryPanel].forEach((panel) => {
     panel.classList.toggle("hidden", !shouldShowPanel(panel));
   });
 
-  tabButtons.forEach((button) => {
+  tabPills.forEach((button) => {
     const isActive = button.dataset.tabTarget === state.activeTab;
     button.classList.toggle("active", isActive);
     button.setAttribute("aria-pressed", isActive ? "true" : "false");
@@ -483,7 +483,7 @@ function renderHeartOverview() {
       <div class="empty-state">
         ${
           state.mode === "shared"
-            ? "Nothing has been added yet. Start with Step 1 below and add your first family member."
+            ? 'Nothing has been added yet. Start from Home and add your first family member.<div class="empty-state-actions"><button class="quick-button" type="button" data-tab-target="home">Go to home</button></div>'
             : "No family members are available in this view."
         }
       </div>
@@ -549,6 +549,9 @@ function renderFamilyList() {
     familyList.innerHTML = `
       <div class="empty-state">
         Add the family members who should be able to sign in and send support. After that, you can log entries for them.
+        <div class="empty-state-actions">
+          <button class="quick-button" type="button" data-tab-target="home">Go to home</button>
+        </div>
       </div>
     `;
     return;
@@ -671,9 +674,9 @@ function renderEntries() {
       <div class="empty-state">
         ${
           isOwner() && !state.familyMembers.length
-            ? "No entries yet because there are no family members added yet."
+            ? 'No entries yet because there are no family members added yet.<div class="empty-state-actions"><button class="quick-button" type="button" data-tab-target="home">Add family first</button></div>'
             : isOwner()
-              ? "No entries yet. Add your first heart note in Step 2."
+              ? 'No entries yet. Add your first heart note from Home.<div class="empty-state-actions"><button class="quick-button" type="button" data-tab-target="home">Go to home</button></div>'
               : "No entries yet for this view."
         }
       </div>
@@ -1430,8 +1433,17 @@ function handleEntryListClick(event) {
   handleSupportAccept(button);
 }
 
-function handleTabClick(event) {
-  setActiveTab(event.currentTarget.dataset.tabTarget);
+function handleAppScreenClick(event) {
+  const tabButton = event.target.closest("[data-tab-target]");
+  if (tabButton) {
+    setActiveTab(tabButton.dataset.tabTarget);
+    return;
+  }
+
+  const acceptButton = event.target.closest('[data-action="accept-support"]');
+  if (acceptButton) {
+    handleSupportAccept(acceptButton);
+  }
 }
 
 function initDefaults() {
@@ -1484,7 +1496,6 @@ entryForm.addEventListener("submit", handleNewEntry);
 intensityInput.addEventListener("input", handleIntensityChange);
 filterSelect.addEventListener("change", () => renderEntries());
 entryList.addEventListener("submit", handleSupportSubmit);
-entryList.addEventListener("click", handleEntryListClick);
-tabButtons.forEach((button) => button.addEventListener("click", handleTabClick));
+appScreen.addEventListener("click", handleAppScreenClick);
 
 initApp();
