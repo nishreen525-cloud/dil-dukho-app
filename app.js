@@ -1407,13 +1407,21 @@ async function initApp() {
     showLogin();
   } catch (error) {
     console.error("Dil Dukho could not initialize.", error);
+    if (SHARED_MODE) {
+      state.mode = "shared";
+      state.service = sharedService;
+      renderAppChrome();
+      state.currentProfile = null;
+      showLogin();
+      showAuthMessage(error.message || "Shared mode could not start.");
+      return;
+    }
+
     state.mode = "demo";
     state.service = demoService;
     renderAppChrome();
     showLogin();
-    showDemoMessage(
-      "Shared mode could not start, so the app stayed in demo mode. Check config.js and Supabase."
-    );
+    showDemoMessage("Demo mode could not start in this browser.");
   }
 }
 
