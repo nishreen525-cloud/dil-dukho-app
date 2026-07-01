@@ -13,16 +13,53 @@
           <p class="eyebrow">Dil Dukho</p>
           <h1>Track hurt, hearts, and repair.</h1>
           <p class="subtitle">
-            A gentle family feelings tracker where you can log what happened, show heart-break by intensity, and let family members respond with supportive messages or emojis.
+            A gentle family feelings tracker with heart visuals, supportive replies, and a shared mode that is designed to work in Firefox.
+          </p>
+        </div>
+
+        <div class="mode-banner">
+          <span id="login-mode-badge" class="badge">Demo mode</span>
+          <p id="setup-note" class="mode-note">
+            Demo mode is active right now. Add your Supabase details in <code>config.js</code> to turn on the shared app.
           </p>
         </div>
 
         <div class="login-layout">
-          <div class="card">
-            <h2>Login</h2>
-            <p class="muted">Use one of the demo profiles and PINs below.</p>
+          <div id="shared-auth-card" class="card hidden">
+            <h2>Shared sign in</h2>
+            <p class="muted">Use email + password. This flow works in Firefox, Chrome, and Safari.</p>
 
-            <form id="login-form" class="stack">
+            <form id="shared-auth-form" class="stack">
+              <label class="field">
+                <span>Email</span>
+                <input id="auth-email" type="email" autocomplete="email" placeholder="you@example.com" required />
+              </label>
+
+              <label class="field">
+                <span>Password</span>
+                <input
+                  id="auth-password"
+                  type="password"
+                  autocomplete="current-password"
+                  minlength="8"
+                  placeholder="At least 8 characters"
+                  required
+                />
+              </label>
+
+              <div class="split-actions">
+                <button class="primary-button" type="submit" data-auth-action="signin">Sign in</button>
+                <button class="ghost-button" type="submit" data-auth-action="signup">Create account</button>
+              </div>
+              <p id="auth-message" class="message" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <div id="demo-login-card" class="card">
+            <h2>Demo login</h2>
+            <p class="muted">Use the local browser demo profiles below.</p>
+
+            <form id="demo-login-form" class="stack">
               <label class="field">
                 <span>Profile</span>
                 <select id="profile-select" required>
@@ -44,7 +81,7 @@
           </div>
 
           <div class="stack">
-            <div class="card">
+            <div id="demo-accounts-card" class="card">
               <h2>Demo accounts</h2>
               <div class="account-grid">
                 <div class="account-pill"><strong>Me</strong><span>1111</span></div>
@@ -53,14 +90,14 @@
                 <div class="account-pill"><strong>Brother</strong><span>4444</span></div>
               </div>
               <p class="muted small">
-                This first version stores data in the browser for a safe local demo.
+                Demo mode stores data in this browser only.
               </p>
             </div>
 
             <div class="card">
-              <h2>Free website path</h2>
+              <h2>Shared setup</h2>
               <p class="muted">
-                You can upload these files to a free static host like Netlify or Vercel. For a real shared family URL across devices, the next step is adding a free database and login service such as Supabase.
+                To turn on the shared family app, create a Supabase project, run the SQL in <code>supabase/schema.sql</code>, and fill in the public settings in <code>config.js</code>.
               </p>
             </div>
           </div>
@@ -74,6 +111,7 @@
             <h1 id="dashboard-title">Welcome</h1>
           </div>
           <div class="topbar-actions">
+            <span id="app-mode-badge" class="badge">Demo mode</span>
             <span id="profile-badge" class="badge"></span>
             <button id="logout-button" class="ghost-button" type="button">Logout</button>
           </div>
@@ -110,6 +148,37 @@
             <div id="heart-overview" class="heart-overview"></div>
           </section>
 
+          <section id="family-panel" class="panel hidden">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Shared setup</p>
+                <h2>Family members</h2>
+              </div>
+            </div>
+
+            <form id="family-form" class="entry-form">
+              <label class="field">
+                <span>Name</span>
+                <input id="family-name-input" type="text" maxlength="40" placeholder="Mom" />
+              </label>
+
+              <label class="field">
+                <span>Relationship</span>
+                <input id="family-relationship-input" type="text" maxlength="40" placeholder="Mother" />
+              </label>
+
+              <label class="field full-width">
+                <span>Email</span>
+                <input id="family-email-input" type="email" maxlength="120" placeholder="mom@example.com" />
+              </label>
+
+              <button class="primary-button full-width" type="submit">Add family member</button>
+              <p id="family-message" class="message full-width" aria-live="polite"></p>
+            </form>
+
+            <div id="family-list" class="member-list"></div>
+          </section>
+
           <section id="entry-panel" class="panel">
             <div class="section-heading">
               <div>
@@ -121,11 +190,7 @@
             <form id="entry-form" class="entry-form">
               <label class="field">
                 <span>Who hurt your heart?</span>
-                <select id="person-input" required>
-                  <option value="mom">Mom</option>
-                  <option value="dad">Dad</option>
-                  <option value="brother">Brother</option>
-                </select>
+                <select id="person-input" required></select>
               </label>
 
               <label class="field">
@@ -181,9 +246,6 @@
                 <span>Filter</span>
                 <select id="filter-select">
                   <option value="all">All family</option>
-                  <option value="mom">Mom</option>
-                  <option value="dad">Dad</option>
-                  <option value="brother">Brother</option>
                 </select>
               </label>
             </div>
@@ -195,6 +257,8 @@
       </section>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="./config.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

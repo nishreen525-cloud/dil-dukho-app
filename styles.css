@@ -1,6 +1,5 @@
 :root {
   color-scheme: light;
-  --bg: #fff7f6;
   --panel: #ffffff;
   --panel-border: #f1d6d4;
   --text: #2e2232;
@@ -8,7 +7,6 @@
   --accent: #e85d75;
   --accent-dark: #c7475f;
   --soft: #ffe4e8;
-  --soft-strong: #ffd5dc;
   --good: #42a37c;
   --good-soft: #e5f7f0;
   --shadow: 0 18px 45px rgba(160, 90, 110, 0.12);
@@ -24,6 +22,13 @@ body {
   min-height: 100vh;
   background: linear-gradient(180deg, #fff8f7 0%, #ffeef2 100%);
   color: var(--text);
+}
+
+code {
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.5rem;
+  background: #fff2f5;
+  color: var(--accent-dark);
 }
 
 .shell {
@@ -59,7 +64,7 @@ body {
 }
 
 .hero {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .eyebrow {
@@ -80,18 +85,37 @@ body {
 .support-empty,
 .support-line,
 .support-help,
-.heart-card p {
+.heart-card p,
+.mode-note {
   color: var(--muted);
 }
 
+.mode-banner,
 .login-layout,
-.dashboard-grid {
+.dashboard-grid,
+.stack,
+.entry-form,
+.heart-overview,
+.entry-list,
+.support-thread,
+.support-composer,
+.support-actions,
+.member-list {
   display: grid;
-  gap: 20px;
+  gap: 16px;
+}
+
+.mode-banner {
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid #f0d7dc;
+  background: #fffafb;
 }
 
 .login-layout {
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1fr 1fr 0.9fr;
+  align-items: start;
 }
 
 .dashboard-grid {
@@ -104,17 +128,6 @@ body {
   border-radius: 20px;
   padding: 22px;
   background: #fffdfd;
-}
-
-.stack,
-.entry-form,
-.heart-overview,
-.entry-list,
-.support-thread,
-.support-composer,
-.support-actions {
-  display: grid;
-  gap: 16px;
 }
 
 .entry-form {
@@ -195,6 +208,7 @@ body {
   transform: none;
 }
 
+.split-actions,
 .account-grid,
 .stats-grid,
 .topbar,
@@ -203,9 +217,15 @@ body {
 .entry-meta,
 .entry-header-line,
 .support-head,
-.support-item footer {
+.support-item footer,
+.member-meta,
+.status-group {
   display: flex;
   gap: 12px;
+}
+
+.split-actions {
+  flex-wrap: wrap;
 }
 
 .account-grid {
@@ -230,13 +250,20 @@ body {
 .topbar,
 .entries-heading,
 .support-head,
-.support-item footer {
+.support-item footer,
+.entry-header-line {
   justify-content: space-between;
   align-items: center;
 }
 
 .topbar {
   margin-bottom: 20px;
+}
+
+.topbar-actions,
+.status-group {
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .badge,
@@ -314,7 +341,9 @@ body {
   grid-column: 1 / -1;
 }
 
-.heart-card {
+.heart-card,
+.entry-card,
+.member-card {
   border: 1px solid #efd5d9;
   background: #fffafb;
   border-radius: 20px;
@@ -323,6 +352,17 @@ body {
 
 .heart-card p {
   margin: 10px 0 0;
+}
+
+.member-card strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.member-meta {
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .heart-meter {
@@ -353,14 +393,10 @@ body {
 }
 
 .entry-card {
-  border: 1px solid #efd5d9;
-  background: #fffafb;
-  border-radius: 20px;
   padding: 20px;
 }
 
 .entry-header-line {
-  justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 12px;
 }
@@ -386,6 +422,7 @@ body {
 }
 
 .support-need {
+  margin-top: 14px;
   padding: 14px;
   border-radius: 16px;
   background: #fff6f7;
@@ -418,11 +455,6 @@ body {
   margin: 0;
 }
 
-.support-marker {
-  font-weight: 700;
-  color: var(--accent-dark);
-}
-
 .accepted-badge {
   background: var(--good-soft);
   color: var(--good);
@@ -443,10 +475,6 @@ body {
   display: grid;
   gap: 12px;
   grid-template-columns: 140px minmax(0, 1fr);
-}
-
-.support-actions {
-  margin-top: 4px;
 }
 
 .empty-state {
@@ -470,7 +498,7 @@ body {
   margin: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   .login-layout,
   .dashboard-grid,
   .entry-form {
