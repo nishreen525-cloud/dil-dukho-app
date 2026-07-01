@@ -139,6 +139,14 @@ function showFamilyMessage(text) {
   familyMessage.textContent = text;
 }
 
+function ensureService() {
+  if (!state.service) {
+    state.service = state.mode === "shared" ? sharedService : demoService;
+  }
+
+  return state.service;
+}
+
 function createId(prefix) {
   if (window.crypto && typeof window.crypto.randomUUID === "function") {
     return window.crypto.randomUUID();
@@ -747,8 +755,9 @@ function showLogin() {
 }
 
 async function refreshData() {
-  state.familyMembers = await state.service.listFamilyMembers(state.currentProfile);
-  state.entries = await state.service.listEntries(state.currentProfile);
+  const service = ensureService();
+  state.familyMembers = await service.listFamilyMembers(state.currentProfile);
+  state.entries = await service.listEntries(state.currentProfile);
 }
 
 const demoService = {
@@ -1239,7 +1248,7 @@ async function handleSharedAuth(event) {
 
 async function handleLogout() {
   try {
-    await state.service.signOut();
+    await ensureService().signOut();
     state.currentProfile = null;
     state.entries = [];
     state.familyMembers = [];
@@ -1400,7 +1409,7 @@ function initDefaults() {
 
 async function initApp() {
   try {
-    state.service = state.mode === "shared" ? sharedService : demoService;
+    ensureService();
     renderAppChrome();
     initDefaults();
     state.currentProfile = await state.service.restoreSession();
